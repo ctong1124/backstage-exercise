@@ -6,7 +6,7 @@ export type Log = {
 type DbValue = {
   value: number;
   occurrences: number;
-  last_datetime: Date | 'N/A';
+  last_datetime: Date;
 }
 
 export type Db = {

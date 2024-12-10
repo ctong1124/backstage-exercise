@@ -7,26 +7,38 @@ type InputFormProps = {
 }
 
 export const InputForm = ({ logs, setLogs }: InputFormProps) => {
-  const [n, setN] = useState(1);
+  const [n, setN] = useState('');
+  const [inputError, setInputError] = useState(false);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    const postData = async () => {
-      const data = {
-        number: n,
+    
+    // regex for numbers between 1 and 100: https://regex101.com/r/rvui1P/1
+    const regex = new RegExp('^[1-9][0-9]?$|^100$')
+
+    // test if input is valid
+    if(regex.test(n)) {
+      setInputError(false);
+      const postData = async () => {
+        const data = {
+          number: Number(n),
+        };
+  
+        const response = await fetch('/api/calculate', {
+          method: 'POST',
+          body: JSON.stringify(data),
+        });
+        return response.json();
       };
-
-      const response = await fetch('/api/calculate', {
-        method: 'POST',
-        body: JSON.stringify(data),
+  
+      postData().then((data) => {
+        setLogs([data, ...logs]);
       });
-      return response.json();
-    };
-
-    postData().then((data) => {
-      console.log('post', typeof data.datetime)
-      setLogs([data, ...logs]);
-    });
+    }
+    // invalid input, show error to user
+    else {
+      setInputError(true);
+    }    
   }
 
   return (
@@ -38,14 +50,16 @@ export const InputForm = ({ logs, setLogs }: InputFormProps) => {
           <label htmlFor="Number">Number: </label>
           <input
             id="number"
-            type="number"
-            min='1'
-            max='100'
+            type="text"
             value={n}
-            onChange={(e) => setN(Number(e.target.value))}
-            className="border border-slate-300 rounded-md p-2"
+            onChange={(e) => setN(e.target.value)}
+            className={`border rounded-md p-2 ${ inputError ? 'border-rose-600 border-2' : 'border-slate-300'}`}
           />
+          { inputError && (
+            <span className="pl-2 text-rose-600">Invalid input, please enter number between 1 and 100</span>
+          )}
         </div>
+        
         <button type="submit" className="px-8 py-2 mt-6 bg-sky-300 rounded-md font-bold">Submit</button>
       </form>
     </div>

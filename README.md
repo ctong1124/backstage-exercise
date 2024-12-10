@@ -93,7 +93,7 @@ Tasks:
 - stores data? 
 - calculation
 - listing table 
-- error handling
+- validation/error handling
 
 
 
@@ -115,6 +115,7 @@ Tasks:
 - tests
 -  could optimize squareOfSums calculation
 - when you refresh client side page, it will refresh the server log table. to fix this, could create a new GET call that grbas all logs from server on component mount
+- on submit, write out equation and answer 
 
 
 # Test use cases

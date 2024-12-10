@@ -97,7 +97,7 @@ export default function handler(
       value, 
       number,
       occurrences: 1,
-      last_datetime: 'N/A', 
+      last_datetime: new Date(0), 
     });
   }
 }

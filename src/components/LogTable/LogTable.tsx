@@ -25,14 +25,17 @@ export const LogTable = ({ logs }: LogsProps) => (
                 logs.map(({datetime, value, number, occurrences, last_datetime}) => {
                   const classString = 'px-6 py-4 font-light text-gray-900 whitespace-nowrap dark:text-white';
                   const dateTimeDate = new Date(datetime);
-                  const lastDateTimeDate = new Date(last_datetime)
+                  const lastDateTimeDate = new Date(last_datetime);
+                  // For the first time number is calculated the server logs last occurence time as unix epoch time, e.g. new Date(0);
+                  const lastDateTimeString = lastDateTimeDate.getTime() === 0 ? 'N/A' : lastDateTimeDate.toLocaleString();
+
                   return (
                     <tr key={`row-${number}-${occurrences}`} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                       <th className={classString}>{dateTimeDate.toLocaleString()}</th>
                       <th className={classString}>{value}</th>
                       <th className={classString}>{number}</th>
                       <th className={classString}>{occurrences}</th>
-                      <th className={classString}>{lastDateTimeDate.toLocaleString()}</th>
+                      <th className={classString}>{lastDateTimeString}</th>
                     </tr>
                   );
                 })
