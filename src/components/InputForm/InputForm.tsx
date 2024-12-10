@@ -26,7 +26,8 @@ export const InputForm = () => {
 
   return (
     <>
-      <h2 className="text-md mb-2">Enter a number to calculate the (square of the sums of first n nums) - (the sum of the squares of first n nums)</h2>
+      <h2 className="text-lg font-medium mb-2">Form</h2>
+      <p>Enter a number to calculate the (square of the sums of first n nums) - (the sum of the squares of first n nums)</p>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="Number">Number: </label>

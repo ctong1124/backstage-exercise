@@ -97,6 +97,31 @@ Tasks:
 
 
 
-# Main files to look at
+# Main files to look at tl;dr
 - TBD
 
+
+# Database structure
+{number: {
+  value: x,
+  occurrences: x,
+  last_datetime: x,
+  },
+  ....
+}
+
+# Improvements 
+- actual Db
+- tests
+-  could optimize squareOfSums calculation
+
+
+# Test use cases
+Input 10 => 2640
+Input 1 => 0
+Input 2 => 4
+Input 3 => 22
+Input 4 => 70
+
+Input 0 => Validation error
+Input 'a' => Validation error
