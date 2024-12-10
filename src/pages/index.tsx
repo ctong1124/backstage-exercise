@@ -17,11 +17,10 @@ const geistMono = localFont({
 
 export default function Home() {
   const [logs, setLogs] = useState<Log[]>([]);
-  console.log('logs', logs)
 
   return (
     <div
-      className={`${geistSans.variable} ${geistMono.variable} p-8 pb-20 font-[family-name:var(--font-geist-sans)]`}
+      className={`${geistSans.variable} ${geistMono.variable} p-8 font-[family-name:var(--font-geist-sans)]`}
     >
       <h1 className="font-bold text-2xl mb-6">Backstage Technical Exercise</h1>
       <InputForm logs={logs} setLogs={setLogs}/>
