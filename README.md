@@ -114,6 +114,7 @@ Tasks:
 - actual Db
 - tests
 -  could optimize squareOfSums calculation
+- when you refresh client side page, it will refresh the server log table. to fix this, could create a new GET call that grbas all logs from server on component mount
 
 
 # Test use cases

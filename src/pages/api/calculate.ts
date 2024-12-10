@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import type { Log, Db } from '@/types/types';
 
 /*
  * Calculates square of the sums of first n nums
@@ -35,30 +36,13 @@ const calculate = (n: number) => {
 /*
  * Code for API reponse and storing data
  */
-type Response = {
-  datetime: Date;
-  value: number;
-  number: number;
-  occurrences: number;
-  last_datetime: Date | 'N/A';
-}
-
-type DbValue = {
-  value: number;
-  occurrences: number;
-  last_datetime: Date | 'N/A';
-}
-
-type Db = {
-  [key: number]: DbValue;
-}
 
 // This models a db on the server. Since it is not a real db, this will be reset everytime the server is restarted
 const db: Db = {};
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Response>,
+  res: NextApiResponse<Log>,
 ) {
   // Receive input from api call
   const { number } = JSON.parse(req.body);

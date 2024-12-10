@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import localFont from "next/font/local";
 import { InputForm } from '@/components/InputForm/InputForm';
-import { Logs } from '@/components/Logs/Logs';
+import { LogTable } from '@/components/LogTable/LogTable';
+import type { Log } from '@/types/types';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -15,15 +16,16 @@ const geistMono = localFont({
 });
 
 export default function Home() {
-  const [logs, setLogs] = useState([]);
+  const [logs, setLogs] = useState<Log[]>([]);
+  console.log('logs', logs)
 
   return (
     <div
       className={`${geistSans.variable} ${geistMono.variable} p-8 pb-20 font-[family-name:var(--font-geist-sans)]`}
     >
       <h1 className="font-bold text-2xl mb-6">Backstage Technical Exercise</h1>
-      <InputForm />
-      <Logs />
+      <InputForm logs={logs} setLogs={setLogs}/>
+      <LogTable logs={logs}/>
     </div>
   );
 }

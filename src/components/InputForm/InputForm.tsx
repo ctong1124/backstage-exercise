@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
+import type { Log } from '@/types/types';
 
+type InputFormProps = {
+  logs: Log[];
+  setLogs: Dispatch<SetStateAction<Log[]>>;
+}
 
-export const InputForm = () => {
+export const InputForm = ({ logs, setLogs }: InputFormProps) => {
   const [n, setN] = useState(1);
   console.log('n', n, typeof n)
 
@@ -21,12 +26,14 @@ export const InputForm = () => {
 
     postData().then((data) => {
       console.log('after post', data);
+      const updatedLogs = [data, ...logs];
+      setLogs(updatedLogs);
     });
   }
 
   return (
     <>
-      <h2 className="text-lg font-medium mb-2">Form</h2>
+      <h2 className="text-lg font-bold mb-2">Form</h2>
       <p>Enter a number to calculate the (square of the sums of first n nums) - (the sum of the squares of first n nums)</p>
       <form onSubmit={handleSubmit}>
         <div>
