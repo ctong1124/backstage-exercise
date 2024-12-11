@@ -20,6 +20,7 @@ Here are the main files to see the bulk of my work!
 - `src/pages/index.tsx`: main entry page for application
 - `src/components/InputForm/InputForm.tsx`: Frontend component for the form
 - `src/components/LogTable/LogTable.tsx`: Frontend component for the logs
+- `src/types/types.ts`: Data structure
 
 # Extended view into my thought process/working process
 
