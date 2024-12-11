@@ -133,4 +133,5 @@ After that looked okay:
 - Could optimize squareOfSums calculation more
   - could implement another type of storage for already calculated sums and utilize that for future sums
 - Right now, you only see the answer to the equation in the logging area under value. Could be nice to write out the equation and answer in the Form area so the functionality/answer is clearer to end user.
+- I don't think my lint config is set up correctly at the moment, so apologies for any formatting issues in my code. 
 
