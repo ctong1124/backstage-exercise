@@ -1,9 +1,9 @@
 import { useState, Dispatch, SetStateAction } from 'react';
-import type { Log } from '@/types/types';
+import type { Response } from '@/types/types';
 
 type InputFormProps = {
-  logs: Log[];
-  setLogs: Dispatch<SetStateAction<Log[]>>;
+  logs: Response[];
+  setLogs: Dispatch<SetStateAction<Response[]>>;
 }
 
 export const InputForm = ({ logs, setLogs }: InputFormProps) => {

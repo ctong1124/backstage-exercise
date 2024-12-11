@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { Log, Db } from '@/types/types';
+import type { Response, Db, Logs } from '@/types/types';
 
 /*
  * Calculates square of the sums of first n nums
@@ -38,10 +38,11 @@ const calculate = (n: number) => (
 
 // This models a db on the server. Since it is not a real db, this will be reset everytime the server is restarted.
 const db: Db = {};
+const logs: Logs = {};
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Log>,
+  res: NextApiResponse<Response>,
 ) {
   // Receive input from api call
   const { number } = JSON.parse(req.body);
@@ -54,17 +55,18 @@ export default function handler(
     // Number is stored in db, so we've calculated this before
     console.log('Retrieving value from db...');
 
-    // Update the db based on previous values
+    // Update logs and db based on old logs and new log
+    const logIdentifier = `${number}-${String(now)}`;
+    logs[logIdentifier] = now; 
+
     const {
       value,
-      occurrences: prevOccurences,
-      last_datetime: prevLastDateTime,
+      logsForN: logsForNPrev,
     } = db[number];
 
     db[number] = {
       value,
-      occurrences: prevOccurences + 1,
-      last_datetime: now, // this occurrence will be the last time when this is called in the future
+      logsForN: [ logIdentifier, ...logsForNPrev],
     }
 
     // Send response
@@ -72,8 +74,8 @@ export default function handler(
       datetime: now, 
       value, 
       number,
-      occurrences: prevOccurences + 1,
-      last_datetime: prevLastDateTime, 
+      occurrences: db[number].logsForN.length,
+      last_datetime: logs[logsForNPrev[0]], 
     });
   }
 
@@ -84,11 +86,14 @@ export default function handler(
     // Do calculation
     const value = calculate(number);
 
+    // Create a log with unique identifier and store log time
+    const logIdentifier = `${number}-${String(now)}`;
+    logs[logIdentifier] = now; 
+
     // Update the db
     db[number] = {
       value,
-      occurrences: 1,
-      last_datetime: now, // this occurrence will be the last time when this is called in the future
+      logsForN: [logIdentifier],
     };
 
     // Send the response

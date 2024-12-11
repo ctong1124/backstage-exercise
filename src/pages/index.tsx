@@ -2,7 +2,7 @@ import { useState } from 'react';
 import localFont from "next/font/local";
 import { InputForm } from '@/components/InputForm/InputForm';
 import { LogTable } from '@/components/LogTable/LogTable';
-import type { Log } from '@/types/types';
+import type { Response } from '@/types/types';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,7 +16,7 @@ const geistMono = localFont({
 });
 
 export default function Home() {
-  const [logs, setLogs] = useState<Log[]>([]);
+  const [logs, setLogs] = useState<Response[]>([]);
 
   return (
     <div

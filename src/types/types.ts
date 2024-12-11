@@ -1,14 +1,20 @@
-export type Log = {
+export type Response = {
   datetime: Date;
   number: number;
-} & DbValue;
-
-type DbValue = {
   value: number;
   occurrences: number;
   last_datetime: Date;
 }
 
+export type LogId = string;
+
+export type Logs = {
+  [key: LogId]: Date;
+}
+
 export type Db = {
-  [key: number]: DbValue;
+  [key: number] : {
+    value: number;
+    logsForN: LogId[];
+  }
 }

@@ -1,7 +1,7 @@
-import type { Log } from '@/types/types';
+import type { Response } from '@/types/types';
 
 type LogsProps = {
-  logs: Log[]; 
+  logs: Response[]; 
 }
 
 export const LogTable = ({ logs }: LogsProps) => (
