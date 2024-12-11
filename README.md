@@ -1,8 +1,8 @@
 
-## Getting Started
+# Getting Started
 
-Using Node v20.9.0
-Using Yarn 1.22.22
+Used Node v20.9.0
+Used Yarn 1.22.22
 
 To get started:
 ```bash
@@ -12,17 +12,18 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
+# TL;DR
+Here are the main files to see the bulk of my work!
+- `src/pages/api/calculate.ts`: all work done on the server including calculating the value requested, API call logic, storing information on past calls
+- `src/pages/index.tsx`: main entry page for application
+- `src/components/InputForm/InputForm.tsx`: Frontend component for the form
+- `src/components/LogTable/LogTable.tsx`: Frontend component for the logs
 
 
-# Requirements
+
+# Extended view into my thought process/working process
+
+## Requirements
 
 - Design a web application that allows the user to query the following:
   - (square of the sum of the first n natural numbers) - (the sum of the squares of the first n natural numbers)
@@ -42,88 +43,83 @@ This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-appl
 }
 `
 
-Assumptions (after thinking through):
-- server log only since application start
-
-
-Initial thoughts:
+## Scope/Architecture:
 - Overall application architecture options:
-  - Real calculations on server with NextJS API routes (pages router)
-    - Pros
-      - Can actually do calculations on server
-      - Actually an API request
-      - Good paradigm for calling API route on form submission
+  - Option 1: Real calculations on server with NextJS API routes (pages router)
+    - Pros:
+      - can actually do calculations on server
+      - actually an API request
+      - existing paradigm for calling API route on form submission
     - Cons: 
       - could be overkill
-  - Real calculations on server with NextJS server actions (apps router)
-    - Pros
-      - Can actually do calculations on server
+  - Option 2: Real calculations on server with NextJS server actions (apps router)
+    - Pros:
+      - can actually do calculations on server
     - Cons: 
       - could be overkill
       - personally not as familiar with app router and server actions at the moment
-  - fake server calls using regular React returning Promise to simulate an async request
-    - Pros
+  - Option 3: Fake server calls using regular React returning Promise to simulate an async request
+    - Pros:
       - probably most simple
       - don't actually have to deal with a server
     - Cons: 
       - faking a lot, including server call and api response
+  - Conclusion: decided to go with option 1. I liked that I could spend time writing real code on the server instead of deciding on a pattern to fake the server call. 
 - Data storage: part of requirements include API call return info includes # of times input has been requested and date/time of last request for this input. This needs to be stored somewhere on "server". Options:
-  - Fake storage in scope of "server"
+  - Option 1: Fake storage in scope of server
     - Pros: 
       - simple
     - Cons:
-      - memory is temporary and destroyed on "server" restart
-  - DB
+      - memory is temporary and destroyed on server restart
+  - Option 2: Implement a real DB
     - Pros:
       - non-temporary memory
     - Cons: 
       - more difficult
       - overkill
+  - Conclusion: went with Option 1, setting up a DB would definitely bloat scope of this project.
 
 
-Main parts: 
-- application architecture
-- UI
-- calculation
 
-
-Tasks:
-- Form to submit
+## Task breakdown
+Quick to test chosen app architecture: 
+- Basic to submit
 - POST route (no calc)
-- stores data? 
-- calculation
+- basic data storage
+
+After it looked okay: 
+- nicer data types
+- calculation code
 - listing table 
+- cleanup
+- make it look nice
 - validation/error handling
 
 
+# Manual Testing
 
-# Main files to look at tl;dr
-- TBD
-
-
-# Database structure
-{number: {
-  value: x,
-  occurrences: x,
-  last_datetime: x,
-  },
-  ....
-}
-
-# Improvements 
-- actual Db
-- tests
--  could optimize squareOfSums calculation
-- when you refresh client side page, it will refresh the server log table. to fix this, could create a new GET call that grbas all logs from server on component mount
-- on submit, write out equation and answer 
-
-
-# Test use cases
-Input 10 => 2640
+## Calculation testing
 Input 1 => 0
 Input 2 => 4
 Input 3 => 22
 Input 4 => 70
+Input 5 => 170
+Input 10 => 2640
 
-Input 0 => Validation error
-Input 'a' => Validation error
+## UI testing
+Happy path, first time query which does calculation
+
+Happy path, repeat query which pulls from DB
+
+Sad path, Input 0 => Validation error
+
+Sad path, Input 'a' => Validation error
+
+
+# TODO/Improvements for future 
+- Could be nice to implement an actual db so we can store values across server restarts
+- Could turn the entire `Manual testing` section (above^^) into actual tests
+- Could optimize squareOfSums calculation more
+  - could implement another layer of storing for already calculated sums and utilize that for future sums
+- When you refresh the page, it will refresh the server log table even if the server is still storing the previous calls. To fix this, could create a new GET call that grabs all logs from server storage on component mount. 
+- Right now, you only see the answer to the equation in the logging area under value. Could be nice to write out the equation and answer in the Form area so the functionality/answer is clearer to end user. 
