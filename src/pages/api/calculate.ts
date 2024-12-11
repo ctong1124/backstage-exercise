@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from 'next';
 import type { Response, Db, Logs } from '@/types/types';
 
 /*
@@ -9,13 +9,11 @@ const squareOfSums = (n: number) => {
   const arrayOfNums = [...Array(n + 1).keys()];
 
   // sum of numbers in array
-  const sumOfNums = arrayOfNums.reduce((acc, i) => (
-    acc + i
-  ), 0);
+  const sumOfNums = arrayOfNums.reduce((acc, i) => acc + i, 0);
 
   // squares sum
-  return sumOfNums **2;
-}
+  return sumOfNums ** 2;
+};
 
 /*
  * Calculates the sum of the squares of first n nums
@@ -28,9 +26,7 @@ const sumOfSquares = (n: number) => {
 /*
  * Calculates (square of the sums of first n nums) - (the sum of the squares of first n nums)
  */
-const calculate = (n: number) => (
-  squareOfSums(n) - sumOfSquares(n)
-);
+const calculate = (n: number) => squareOfSums(n) - sumOfSquares(n);
 
 /*
  * Code for API reponse and storing data
@@ -40,10 +36,7 @@ const calculate = (n: number) => (
 const db: Db = {};
 const logs: Logs = {};
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Response>,
-) {
+export default function handler(req: NextApiRequest, res: NextApiResponse<Response>) {
   // Receive input from api call
   const { number } = JSON.parse(req.body);
 
@@ -51,35 +44,30 @@ export default function handler(
   const now = new Date();
 
   // Calculate the value or pull the number from memory
-  if(db[number]) {
+  if (db[number]) {
     // Number is stored in db, so we've calculated this before
     console.log('Retrieving value from db...');
 
     // Update logs and db based on old logs and new log
     const logIdentifier = `${number}-${String(now)}`;
-    logs[logIdentifier] = now; 
+    logs[logIdentifier] = now;
 
-    const {
-      value,
-      logsForN: logsForNPrev,
-    } = db[number];
+    const { value, logsForN: logsForNPrev } = db[number];
 
     db[number] = {
       value,
-      logsForN: [ logIdentifier, ...logsForNPrev],
-    }
+      logsForN: [logIdentifier, ...logsForNPrev],
+    };
 
     // Send response
     res.status(200).json({
-      datetime: now, 
-      value, 
+      datetime: now,
+      value,
       number,
       occurrences: db[number].logsForN.length,
-      last_datetime: logs[logsForNPrev[0]], 
+      last_datetime: logs[logsForNPrev[0]],
     });
-  }
-
-  else {
+  } else {
     // Number is not stored in db, we need to calculate
     console.log('Calculating...');
 
@@ -88,7 +76,7 @@ export default function handler(
 
     // Create a log with unique identifier and store log time
     const logIdentifier = `${number}-${String(now)}`;
-    logs[logIdentifier] = now; 
+    logs[logIdentifier] = now;
 
     // Update the db
     db[number] = {
@@ -98,11 +86,11 @@ export default function handler(
 
     // Send the response
     res.status(200).json({
-      datetime: now, 
-      value, 
+      datetime: now,
+      value,
       number,
       occurrences: 1,
-      last_datetime: new Date(0), 
+      last_datetime: new Date(0),
     });
   }
 }
