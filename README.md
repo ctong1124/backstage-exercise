@@ -127,9 +127,11 @@ After that looked okay:
 
 
 # TODO/Improvements for future 
+- Currently, I am not saving individual logs of previous calls on the server, I am re-writing over the existing log in the "db" with only the info that I need to display. To support additional features in the future like more searching or manipulations, we could update the data type of the db to store individual logs and have occurrences and last_datetime be calculated.
+- When you refresh the page, it will refresh the server log table, even if the server is still storing the previous calls. To fix this, could create a new GET call that grabs all logs from server storage on component mount. 
 - Could be nice to implement an actual db so we can store values across server restarts
 - Could turn the entire `Manual testing` section (above^^) into actual tests
 - Could optimize squareOfSums calculation more
   - could implement another type of storage for already calculated sums and utilize that for future sums
-- When you refresh the page, it will refresh the server log table, even if the server is still storing the previous calls. To fix this, could create a new GET call that grabs all logs from server storage on component mount. 
-- Right now, you only see the answer to the equation in the logging area under value. Could be nice to write out the equation and answer in the Form area so the functionality/answer is clearer to end user. 
+- Right now, you only see the answer to the equation in the logging area under value. Could be nice to write out the equation and answer in the Form area so the functionality/answer is clearer to end user.
+
